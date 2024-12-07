@@ -1,5 +1,9 @@
-import { Suspense, useEffect, useState } from "react";
-import { FormattedMessage, IntlProvider } from "react-intl";
+import { lazy, Suspense, useEffect, useState } from "react";
+import { IntlProvider } from "react-intl";
+
+const Nav = lazy(() => import("./components/nav"));
+const Banner = lazy(() => import("./components/banner"));
+const About = lazy(() => import('./components/about'))
 
 /**
  * Dynamically import translated files for a given local, only when the translations are needed.
@@ -12,28 +16,21 @@ const getMessagesByLocale = async (locale: string) => {
 
 const App = () => {
   const [messages, setMessages] = useState({});
-  const locale = "fr";
+  const [locale, setLocale] = useState("en");
   useEffect(() => {
-    setTimeout(() => {
-      console.log('content loading...')
-    }, 2000);
     getMessagesByLocale(locale)
       .then((messages) => setMessages(messages))
       .catch(() =>
         console.error(`Error loading messages for locale: ${locale}`)
       );
-  }, []);
+  }, [locale]);
 
   return (
     <Suspense fallback={<h1>Loading...</h1>}>
-      <IntlProvider messages={messages} locale="fr" defaultLocale="en">
-        <p>
-          <FormattedMessage
-            id="greeting"
-            defaultMessage="Bonjour je m'appele {name}"
-            values={{ name: "Quentin" }}
-          />
-        </p>
+      <IntlProvider messages={messages} locale={locale} defaultLocale="en">
+        <Nav locale={locale} setLocale={setLocale} />
+        <Banner />
+        <About />
       </IntlProvider>
     </Suspense>
   );

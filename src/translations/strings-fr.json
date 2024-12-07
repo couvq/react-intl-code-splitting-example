@@ -1,3 +1,5 @@
 {
-  "greeting": "Bonjour je m'appele {name}"
+  "greeting": "Bonjour {name}",
+  "bannerText": "Il s'agit d'un contenu d'espace réservé pour la section bannière.",
+  "aboutText": "Il s'agit d'un contenu d'espace réservé pour la section À propos."
 }
